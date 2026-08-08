@@ -6,39 +6,26 @@
 <title>MAKEUP LIND@S</title>
 <style>
 body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;padding:10px;padding-bottom:140px}
-.logo{width:220px;margin:10px auto;display:block}
+.logo{width:240px;margin:15px auto;display:block;border-radius:15px}
 .btns{display:flex;justify-content:center;gap:10px;margin:15px 0}
-.btns a{padding:12px 18px;border-radius:25px;text-decoration:none;font-weight:bold;color:#fff;font-size:14px}
-.ig{background:#d62976}
+.btns a{padding:12px 20px;border-radius:30px;text-decoration:none;font-weight:bold;color:#fff;font-size:14px}
+.ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#bc1888)}
 .wa{background:#25D366}
-#productos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
-.prod{background:#111;border-radius:15px;padding:6px}
-.prod img{width:100%;border-radius:12px}
-.boton{ display:block; background:#FFD700; color:#000; padding:10px; border-radius:20px; text-decoration:none; font-weight:bold; margin-top:6px; font-size:11px}
-.flot{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:10px;z-index:999}
-.flot a{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;color:#fff}
+#productos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}
+.prod{background:#111;border-radius:18px;padding:7px;border:1px solid #222}
+.prod img{width:100%;border-radius:14px;aspect-ratio:1/1;object-fit:cover}
+.boton{display:block;background:#FFD700;color:#000;padding:11px;border-radius:25px;text-decoration:none;font-weight:bold;margin-top:7px;font-size:11px}
+.flot{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:12px;z-index:999}
+.flot a{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.5)}
 </style>
 </head>
 <body>
-<img id="miLogo" class="logo" src="">
+<img id="miLogo" class="logo" src="" alt="MAKEUP LIND@S">
 <div class="btns">
-<a class="ig" href="https://www.instagram.com/makeuplinda2026" target="_blank">Instagram</a>
-<a class="wa" href="https://wa.me/573161465193" target="_blank">WhatsApp</a>
+<a class="ig" href="https://www.instagram.com/makeuplinda2026" target="_blank">📸 Instagram</a>
+<a class="wa" href="https://wa.me/573161465193?text=Hola%20Jennifer!%20Vi%20tu%20tienda%20MAKEUP%20LIND@S" target="_blank">💬 WhatsApp</a>
 </div>
-<div id="productos">Cargando productos...</div>
+<div id="productos">Cargando...</div>
 <div class="flot">
 <a class="ig" href="https://www.instagram.com/makeuplinda2026" target="_blank">📸</a>
-<a class="wa" href="https://wa.me/573161465193?text=Hola Jennifer!" target="_blank">💬</a>
-</div>
-<script>
-async function cargar(){
-try{
-let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
-let d=await r.json();
-let logo=d.find(f=>f.name.includes('8325')||f.name.toLowerCase().includes('logo'));
-if(logo) document.getElementById('miLogo').src=logo.download_url;
-let fotos=d.filter(f=>{let n=f.name.toLowerCase();return (n.endsWith('.jpg')||n.endsWith('.png')||n.endsWith('.jpeg'))&&!n.includes('8325')&&!n.toLowerCase().includes('logo');});
-let c=document.getElementById('productos');c.innerHTML='';
-for(let i=0;i<fotos.length;i++){
-let a=fotos[i];
-let div=document.createElement('div');div.className='
+<a class="wa" href="https://wa.me/573161465193"
