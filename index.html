@@ -1,1 +1,40 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Makeup Lind@s</title><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#050505;color:#fff;font-family:Arial,sans-serif}.bar{background:#D4AF37;color:#000;text-align:center;padding:9px;font-size:11px;font-weight:900}.top{background:#000;padding:18px;text-align:center;border-bottom:2px solid #D4AF37;position:sticky;top:0;z-index:10}.top h1{color:#D4AF37;font-size:24px;letter-spacing:2px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}.card{background:#121212;border-radius:22px;overflow:hidden;border:1px solid #222}.card img{width:100%;height:380px;object-fit:cover;display:block}.info{padding:12px;text-align:center}.btn{display:block;background:#D4AF37;color:#000;padding:14px;border-radius:25px;font-weight:900;font-size:12px;text-decoration:none}.wsp{position:fixed;bottom:20px;right:16px;background:#25D366;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;text-decoration:none;z-index:99}</style></head><body><div class="bar">🚚 DOMICILIO GRATIS CALI +$80.000</div><div class="top"><h1>MAKEUP LIND@S</h1></div><div class="grid" id="g"></div><a class="wsp" href="https://wa.me/573161465193">💬</a><script>fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents').then(r=>r.json()).then(f=>{let g=document.getElementById('g');g.innerHTML='';f.filter(x=>x.name.match(/\.jpe?g$/i)).forEach((x,i)=>{g.innerHTML+=`<div class=card><img src="${x.download_url}"><div class=info><a class=btn href="https://wa.me/573161465193?text=Hola%20quiero%20el%20producto%20${i+1}">PEDIR POR WHATSAPP</a></div></div>`;});});</script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Makeup Lindas</title>
+<style>
+body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;padding:10px}
+h1{color:#FFD700}
+#productos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.prod{background:#111;border-radius:15px;padding:8px;border:1px solid #333}
+.prod img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
+.btn{display:block;background:#FFD700;color:#000;padding:10px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:8px}
+#visor{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:999}
+#visor img{max-width:95%;max-height:95%;border-radius:15px}
+</style>
+</head>
+<body>
+<h1>💄 MAKEUP LINDAS 💄</h1>
+<div id="productos"></div>
+<div id="visor" onclick="this.style.display='none'"><img id="imgGrande"></div>
+<script>
+async function cargar(){
+let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
+let d=await r.json();
+let c=document.getElementById('productos');
+d.forEach(a=>{
+if(a.name.endsWith('.jpg')||a.name.endsWith('.png')||a.name.endsWith('.jpeg')){
+let div=document.createElement('div');div.className='prod';
+let img=document.createElement('img');img.src=a.download_url;
+img.onclick=()=>{document.getElementById('imgGrande').src=a.download_url;document.getElementById('visor').style.display='flex'}
+let b=document.createElement('a');b.className='btn';b.href=`https://wa.me/573161465193?text=Hola! Me interesa este producto: ${a.name}`;b.target='_blank';b.innerText='PEDIR POR WHATSAPP';
+div.appendChild(img);div.appendChild(b);c.appendChild(div);
+}
+});
+}
+cargar();
+</script>
+</body>
+</html>
