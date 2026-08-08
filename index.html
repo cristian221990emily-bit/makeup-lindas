@@ -5,53 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAKEUP LIND@S</title>
 <style>
-body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;padding:10px;padding-bottom:130px}
-.logo{width:250px;margin:15px auto;display:block;border-radius:12px;min-height:80px;background:#111}
-#productos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;padding:10px;padding-bottom:220px}
+.logo{width:250px;margin:15px auto;display:block;border-radius:12px}
+#productos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
 .prod{background:#111;border-radius:18px;padding:6px;border:1px solid #222}
-.prod img{width:100%;border-radius:14px;aspect-ratio:1/1;object-fit:cover;background:#000}
+.prod img{width:100%;border-radius:14px;aspect-ratio:1/1;object-fit:cover}
 .boton{display:block;background:#FFD700;color:#000;padding:11px;border-radius:25px;text-decoration:none;font-weight:bold;margin-top:7px;font-size:11px}
-.flot{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:12px;z-index:9999}
-.flot a{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.7)}
-.flot-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#bc1888)}
-.flot-wa{background:#25D366}
+.flot{position:fixed;bottom:20px;left:15px;display:flex;flex-direction:row;gap:14px;z-index:9999}
+.flot a{width:62px;height:62px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 18px rgba(0,0,0,0.8);overflow:hidden}
+.flot a img{width:100%;height:100%;object-fit:cover}
 </style>
 </head>
 <body>
 <img id="miLogo" class="logo" src="">
-<div id="productos"></div>
+<div id="productos">Cargando...</div>
+
 <div class="flot">
-<a class="flot-ig" href="https://www.instagram.com/makeuplinda2026" target="_blank">📸</a>
-<a class="flot-wa" href="https://wa.me/573161465193?text=Hola%20Jennifer!%20Vi%20tu%20tienda%20MAKEUP%20LIND@S" target="_blank">💬</a>
+<a href="https://www.instagram.com/makeuplinda2026" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" style="padding:12px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#bc1888);width:100%;height:100%;box-sizing:border-box" alt="IG">
+</a>
+<a href="https://wa.me/573161465193?text=Hola%20Jennifer!%20Vi%20tu%20tienda%20MAKEUP%20LIND@S%20💄" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:38px;height:38px" alt="WA">
+</a>
 </div>
+
 <script>
 async function cargar(){
-let c=document.getElementById('productos');
 try{
 let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
-if(!r.ok) throw new Error('bloqueado');
 let d=await r.json();
 localStorage.setItem('cache_makeup', JSON.stringify(d));
 mostrar(d);
 }catch(e){
 let cache=localStorage.getItem('cache_makeup');
-if(cache){mostrar(JSON.parse(cache));}
-else{c.innerHTML='<p style=color:#FFD700>GitHub esta bloqueado 1 hora por tantas pruebas<br>Espera 60 min y recarga. Tus fotos siguen ahi.</p>';}
+if(cache) mostrar(JSON.parse(cache));
 }
 }
 function mostrar(d){
 let logo=d.find(f=>f.name.includes('8325')||f.name.toLowerCase().includes('logo'));
 if(logo) document.getElementById('miLogo').src=logo.download_url;
 let fotos=d.filter(f=>{let n=f.name.toLowerCase();return (n.endsWith('.jpg')||n.endsWith('.png')||n.endsWith('.jpeg'))&&n.indexOf('8325')==-1&&n.indexOf('logo')==-1;});
-let cont=document.getElementById('productos');cont.innerHTML='';
+let c=document.getElementById('productos');c.innerHTML='';
 for(let i=0;i<fotos.length;i++){
 let a=fotos[i];
 let div=document.createElement('div');div.className='prod';
 let img=document.createElement('img');img.src=a.download_url;img.loading='lazy';
 let btn=document.createElement('a');btn.className='boton';btn.href='https://wa.me/573161465193?text=Hola! Me interesa el producto '+(i+1);btn.target='_blank';btn.innerText='PEDIR POR WHATSAPP';
-div.appendChild(img);div.appendChild(btn);cont.appendChild(div);
+div.appendChild(img);div.appendChild(btn);c.appendChild(div);
 }
 }
+let cache=localStorage.getItem('cache_makeup');
+if(cache){let d=JSON.parse(cache);let logo=d.find(f=>f.name.includes('8325')||f.name.toLowerCase().includes('logo'));if(logo)document.getElementById('miLogo').src=logo.download_url;}
 cargar();
 </script>
 </body>
