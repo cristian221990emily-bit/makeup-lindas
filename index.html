@@ -9,63 +9,39 @@ body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;pad
 .logo{width:250px;margin:15px auto;display:block;border-radius:12px}
 #productos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
 .prod{background:#111;border-radius:18px;padding:6px;border:1px solid #222}
-.prod img{width:100%;border-radius:14px;aspect-ratio:1/1;object-fit:cover;cursor:zoom-in}
+.prod img{width:100%;border-radius:14px;aspect-ratio:1/1;object-fit:cover;display:block}
 .boton{display:block;background:#FFD700;color:#000;padding:11px;border-radius:25px;text-decoration:none;font-weight:bold;margin-top:7px;font-size:11px}
-.flot{position:fixed;bottom:20px;left:15px;display:flex;flex-direction:row;gap:14px;z-index:9999}
-.flot a{width:62px;height:62px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 18px rgba(0,0,0,0.8);overflow:hidden}
+.flot{position:fixed;bottom:20px;left:15px;display:flex;gap:14px;z-index:9998}
+.flot a{width:62px;height:62px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .flot a img{width:100%;height:100%;object-fit:cover}
-
-/* ZOOM */
-#zoom{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:10000;flex-direction:column;padding:15px;box-sizing:border-box}
-#zoom img{max-width:95%;max-height:80%;border-radius:15px;box-shadow:0 0 30px rgba(255,255,255,0.2)}
-#zoom.cerrar{margin-top:20px;background:#fff;color:#000;padding:10px 25px;border-radius:25px;font-weight:bold;cursor:pointer}
-#zoom.volver{margin-top:10px;color:#FFD700;font-size:13px}
+#visor{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:none;z-index:99999;align-items:center;justify-content:center}
+#visor img{max-width:98%;max-height:85%;border-radius:10px}
+#visor b{position:absolute;top:20px;right:20px;background:white;color:black;padding:10px 20px;border-radius:20px}
 </style>
 </head>
 <body>
-<img id="miLogo" class="logo" src="">
-<div id="productos">Cargando...</div>
-
+<img id="miLogo" class="logo">
+<div id="productos"></div>
 <div class="flot">
-<a href="https://www.instagram.com/makeuplinda2026" target="_blank"><img src="./instagram.png" alt="IG"></a>
-<a href="https://wa.me/573161465193?text=Hola%20Jennifer!%20Vi%20tu%20tienda%20MAKEUP%20LIND@S" target="_blank"><img src="./whatsapp.png" alt="WA"></a>
+<a href="https://www.instagram.com/makeuplinda2026" target="_blank"><img src="./instagram.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2111/2111463.png'"></a>
+<a href="https://wa.me/573161465193" target="_blank"><img src="./whatsapp.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/733/733585.png'"></a>
 </div>
-
-<div id="zoom" onclick="cerrarZoom()">
-<img id="imgZoom" src="">
-<div class="cerrar" onclick="cerrarZoom()">✕ CERRAR</div>
-<div class="volver">Toca fuera para volver a la página</div>
-</div>
+<div id="visor" onclick="this.style.display='none'"><b>X CERRAR</b><img id="fotoGrande"></div>
 
 <script>
-function abrirZoom(src){document.getElementById('imgZoom').src=src;document.getElementById('zoom').style.display='flex';}
-function cerrarZoom(){document.getElementById('zoom').style.display='none';}
+function abrir(foto){document.getElementById('fotoGrande').src=foto;document.getElementById('visor').style.display='flex';}
 
-async function cargar(){
-try{
-let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
-let d=await r.json();
-localStorage.setItem('cache_makeup', JSON.stringify(d));
-mostrar(d);
-}catch(e){
-let cache=localStorage.getItem('cache_makeup');
-if(cache) mostrar(JSON.parse(cache));
-}
-}
-function mostrar(d){
-let logo=d.find(f=>f.name.includes('8325')||f.name.toLowerCase().includes('logo'));
-if(logo) document.getElementById('miLogo').src=logo.download_url;
-let fotos=d.filter(f=>{let n=f.name.toLowerCase();return (n.endsWith('.jpg')||n.endsWith('.png')||n.endsWith('.jpeg'))&&n.indexOf('8325')==-1&&n.indexOf('logo')==-1&&n!=='instagram.png'&&n!=='whatsapp.png';});
-let c=document.getElementById('productos');c.innerHTML='';
+fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/?'+Date.now())
+.then(r=>r.json()).then(d=>{
+let logo=d.find(f=>f.name.includes('8325'));
+if(logo)document.getElementById('miLogo').src=logo.download_url;
+let fotos=d.filter(f=>{let n=f.name.toLowerCase();return (n.endsWith('.jpg')||n.endsWith('.jpeg')||n.endsWith('.png'))&&!n.includes('8325')&&n!=='instagram.png'&&n!=='whatsapp.png';});
+let html='';
 for(let i=0;i<fotos.length;i++){
-let a=fotos[i];
-let div=document.createElement('div');div.className='prod';
-let img=document.createElement('img');img.src=a.download_url;img.loading='lazy';img.onclick=function(){abrirZoom(this.src);};
-let btn=document.createElement('a');btn.className='boton';btn.href='https://wa.me/573161465193?text=Hola! Me interesa el producto '+(i+1);btn.target='_blank';btn.innerText='PEDIR POR WHATSAPP';
-div.appendChild(img);div.appendChild(btn);c.appendChild(div);
+html+=`<div class="prod"><img src="${fotos[i].download_url}" onclick="abrir('${fotos[i].download_url}')"><a class="boton" href="https://wa.me/573161465193?text=Hola%20quiero%20producto%20${i+1}" target="_blank">PEDIR POR WHATSAPP</a></div>`;
 }
-}
-cargar();
+document.getElementById('productos').innerHTML=html;
+});
 </script>
 </body>
 </html>
