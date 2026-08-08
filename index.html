@@ -6,7 +6,7 @@
 <title>MAKEUP LIND@S</title>
 <style>
 body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;padding:10px;padding-bottom:90px}
-.logo{width:200px;margin:15px auto;display:block}
+.logo{width:220px;margin:10px auto;display:block;background:#000;padding:5px;border-radius:15px}
 #productos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .prod{background:#111;border-radius:15px;padding:8px;border:1px solid #222}
 .prod img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
@@ -18,7 +18,8 @@ body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;pad
 </style>
 </head>
 <body>
-<img src="logo.png" class="logo" alt="MAKEUP LIND@S">
+<img id="miLogo" class="logo" alt="MAKEUP LIND@S">
+<h2 style="margin:5px 0 10px 0;letter-spacing:2px">MAKEUP LIND@S</h2>
 <div id="productos"></div>
 <div id="visor" onclick="cerrar()"><img id="imgGrande"></div>
 <a href="https://wa.me/573161465193?text=Hola%20Jennifer!%20Vi%20tu%20tienda%20MAKEUP%20LIND@S%20y%20quiero%20mas%20info" class="wa-flotante" target="_blank">
@@ -31,10 +32,12 @@ window.onpopstate=function(){document.getElementById('visor').style.display='non
 async function cargar(){
 let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
 let d=await r.json();
+let logo = d.find(f => f.name.toLowerCase().includes('logo') || f.name.includes('WA8325') || f.name.includes('WA83'));
+if(logo){document.getElementById('miLogo').src = logo.download_url;}
 let c=document.getElementById('productos');
 d.forEach(a=>{
 if(a.name.toLowerCase().endsWith('.jpg')||a.name.toLowerCase().endsWith('.png')||a.name.toLowerCase().endsWith('.jpeg')){
-let n=a.name.toLowerCase(); if(n=='logo.png'||n.includes('logo')) return;
+let n=a.name.toLowerCase(); if(n.includes('logo')||a.name.includes('WA8325')||a.name.includes('WA83')) return;
 let div=document.createElement('div');div.className='prod';
 let img=document.createElement('img');img.src=a.download_url;
 img.onclick=()=>abrir(a.download_url)
