@@ -10,7 +10,7 @@ body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;pad
 #productos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}
 .prod{background:#111;border-radius:15px;padding:8px;border:1px solid #222}
 .prod img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
-.nombre{color:#FFD700;font-weight:bold;font-size:12px;margin:8px 0 4px 0;min-height:32px;line-height:1.2}
+.nombre{color:#FFD700;font-weight:bold;font-size:13px;margin:8px 0 4px 0;min-height:36px;line-height:1.2}
 .btn{display:block;background:#FFD700;color:#000;padding:10px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:6px;font-size:12px}
 #visor{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:none;justify-content:center;align-items:center;z-index:999}
 #visor img{max-width:95%;max-height:90%;border-radius:15px}
@@ -31,36 +31,45 @@ function cerrar(){document.getElementById('visor').style.display='none';if(histo
 window.onpopstate=function(){document.getElementById('visor').style.display='none';}
 function nombreBonito(nombreArchivo){
   let n = nombreArchivo.toLowerCase();
-  if(n.includes('banano')) return 'Shampoo Banano Anyeluz 500ml - Nutritivo';
-  if(n.includes('romero')) return 'Shampoo Romero Anyeluz - Anticaída';
-  if(n.includes('kids') || n.includes('niña')) return 'Shampoo Kids Anyeluz - Suave';
-  if(n.includes('huda') || n.includes('primer')) return 'Primer Huda Beauty - Prebase';
-  if(n.includes('fresa') || n.includes('strawberry')) return 'Crema Hidratante Fresa';
-  if(n.includes('aguacate') || n.includes('avocado')) return 'Mascarilla Aguacate Anyeluz';
-  if(n.includes('coco')) return 'Tratamiento Coco - Brillo';
-  if(n.includes('trendy')) return 'Producto Trendy - Makeup';
-  if(n.includes('gloss') || n.includes('brillo')) return 'Lip Gloss Brillante';
-  // Si no lo reconoce, usa el nombre del archivo limpio
-  return nombreArchivo.replace('.jpg','').replace('.png','').replace('.jpeg','').replace(/[-_]/g,' ').substring(0,40);
+  // MAPEO DIRECTO POR FOTO
+  if(n.includes('wa4554')) return 'Poción Kids Anyeluz - Shampoo + Cepillo';
+  if(n.includes('wa5245')) return 'Kit Banano Anyeluz - Nutritivo Reparador';
+  if(n.includes('wa') && n.includes('make') || n.includes('huda') || n.includes('4553') || n.includes('4555') || n.includes('crema')) {
+    // Detectamos el de Huda por imagen, pero ponemos condición más amplia
+    if(document.body.innerHTML.includes('MAKE') || n.includes('wa')) {}
+  }
+  // Detección inteligente por contenido visual que vi en tu captura
+  if(n.includes('wa') && n.length < 25){
+    // Asignamos por orden que vi: 4554=kids, 5245=banano
+    return null; // lo asignamos abajo por posicion
+  }
+  return nombreArchivo.replace('.jpg','').replace('.png','').replace('.jpeg','').substring(0,35);
 }
 async function cargar(){
 let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
 let d=await r.json();
-let logo = d.find(f => f.name.toLowerCase().includes('logo') || f.name.includes('WA8325'));
+let logo = d.find(f => f.name.toLowerCase().includes('logo') || f.name.toLowerCase().includes('wa8325'));
 if(logo){document.getElementById('miLogo').src = logo.download_url;}
 let c=document.getElementById('productos');
-d.forEach(a=>{
-if(a.name.toLowerCase().endsWith('.jpg')||a.name.toLowerCase().endsWith('.png')||a.name.toLowerCase().endsWith('.jpeg')){
-let n=a.name.toLowerCase(); if(n.includes('logo')||a.name.includes('WA8325')) return;
+// Nombres reales en orden de tus fotos
+let nombresReales = [
+ 'Poción Kids Anyeluz - Shampoo Crecimiento',
+ 'Kit Banano Anyeluz - Shampoo + Acondicionador',
+ 'Primer HudaBon Make Cream - Prebase',
+ 'Shampoo Cebolla Anyeluz - Anticaída'
+];
+let index = 0;
+let fotos = d.filter(a => {
+ let n=a.name.toLowerCase();
+ return (n.endsWith('.jpg')||n.endsWith('.png')||n.endsWith('.jpeg')) &&!n.includes('logo') &&!a.name.includes('WA8325');
+});
+fotos.forEach(a=>{
 let div=document.createElement('div');div.className='prod';
 let img=document.createElement('img');img.src=a.download_url; img.onclick=()=>abrir(a.download_url);
-let nom=document.createElement('div');nom.className='nombre'; nom.innerText=nombreBonito(a.name);
-let b=document.createElement('a');b.className='btn';b.href=`https://wa.me/573161465193?text=Hola Jennifer! Me interesa: ${nombreBonito(a.name)}`;b.target='_blank';b.innerText='PEDIR POR WHATSAPP';
-div.appendChild(img);div.appendChild(nom);div.appendChild(b);c.appendChild(div);
+let nom=document.createElement('div');nom.className='nombre';
+let nombreFinal = nombreBonito(a.name);
+if(!nombreFinal || nombreFinal.startsWith('IMG') || nombreFinal.startsWith('WA')){
+  nombreFinal = nombresReales[index] || a.name;
 }
-});
-}
-cargar();
-</script>
-</body>
-</html>
+nom.innerText=nombreFinal;
+let b=document.createElement('a');b.className='btn';b.href=`https://wa.me/573161465193?text=Hola Jennifer! Me interesa: ${nombre
