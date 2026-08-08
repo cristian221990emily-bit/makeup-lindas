@@ -10,8 +10,8 @@ body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;pad
 #productos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}
 .prod{background:#111;border-radius:15px;padding:8px;border:1px solid #222}
 .prod img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
-.nombre{color:#FFD700;font-weight:bold;font-size:13px;margin:8px 0 4px 0;min-height:36px}
-.btn{display:block;background:#FFD700;color:#000;padding:10px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:6px;font-size:12px}
+.nombre{color:#FFD700;font-weight:bold;font-size:11px;margin:8px 0 4px 0;min-height:40px;line-height:1.2}
+.btn{display:block;background:#FFD700;color:#000;padding:10px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:6px;font-size:10px}
 #visor{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:none;justify-content:center;align-items:center;z-index:999}
 #visor img{max-width:95%;max-height:90%;border-radius:15px}
 .wa-flotante{position:fixed;bottom:20px;right:20px;background:#25D366;width:65px;height:65px;border-radius:50%;display:flex;justify-content:center;align-items:center;z-index:1000}
@@ -19,39 +19,74 @@ body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;pad
 </style>
 </head>
 <body>
-<img id="miLogo" class="logo" alt="MAKEUP LIND@S">
-<h2 style="color:#FFD700;letter-spacing:2px">MAKEUP LIND@S</h2>
+<img id="miLogo" class="logo">
 <div id="productos"></div>
 <div id="visor" onclick="this.style.display='none'"><img id="imgGrande"></div>
-<a href="https://wa.me/573161465193?text=Hola Jennifer! Vi tu tienda MAKEUP LIND@S" class="wa-flotante" target="_blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
-</a>
+<a href="https://wa.me/573161465193?text=Hola Jennifer! Vi tu tienda MAKEUP LIND@S" class="wa-flotante" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
 <script>
+const NOMBRES_REALES = {
+  "banano": "Shampoo con Banano Sin Sal - Dapilus",
+  "tongole": "Poción Tongolé Shampoo + Tratamiento Anyeluz",
+  "young": "Esponja Youngqi Just Young - Fancy Meeting You",
+  "mystic": "Labial Mystic Magic - Púrpura",
+  "candy": "Gel Corporal Candy Bum - Púrpura",
+  "girl": "Body Splash Girl Boss - Púrpura",
+  "pina": "Exfoliante Corporal Piña Colada - Púrpura",
+  "stitch": "Tarjetero Stitch con Llavero",
+  "serum": "Serum Despigmentante - Púrpura Facial",
+  "chica": "Lip Gloss Chica Púrpura Girl Boss 15ml",
+  "watermelon": "Exfoliante Corporal Watermelon - Púrpura",
+  "corrector": "Corrector Líquido Ani-K Tono 02",
+  "base": "Base Líquida Ani-K 2 en 1",
+  "detox": "Jabón Carbón Activado Detox - Púrpura",
+  "bubble": "Exfoliante Bubble Gum - Púrpura",
+  "caramel": "Gel de Ducha Caramel Crush - Púrpura",
+  "holiday": "Iluminador Holiday Highlight Sfr Color",
+  "blink": "Paleta Sombras Blinked - Trendy",
+  "micelar": "Agua Micelar Purpure - Manzanilla",
+  "glow": "Lip Glow Candy - Brillo Mágico",
+  "puff": "Set Esponjas Powder Puff Corazón",
+  "strawberry": "Body Splash Strawberry - Púrpura",
+  "maracuya": "Body Splash Maracuyá Tropical",
+  "vainilla": "Body Splash Vainilla Dreams",
+  "kit": "Kit Corporal Candy Bum x3",
+  "sheglam": "Máscara Pestañas Sheglam Doble",
+  "lucky": "Llavero Espejo Gatito Lucky",
+  "berry": "Exfoliante Strawberry Fresa",
+  "coco": "Body Splash Coconut Shine"
+};
+
 async function cargar(){
- try{
-  let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
-  let d=await r.json();
-  let logoFile = d.find(f => f.name.toLowerCase().includes('logo') || f.name.includes('8325'));
-  if(logoFile) document.getElementById('miLogo').src = logoFile.download_url;
+ let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
+ let d=await r.json();
+ let logo=d.find(f=>f.name.toLowerCase().includes('logo')||f.name.includes('8325'));
+ if(logo)document.getElementById('miLogo').src=logo.download_url;
+ let fotos=d.filter(f=>{
+   let n=f.name.toLowerCase();
+   return (n.endsWith('.jpg')||n.endsWith('.png')||n.endsWith('.jpeg')) &&!n.includes('logo') &&!f.name.includes('8325');
+ });
+ let c=document.getElementById('productos');
+ c.innerHTML='';
+ fotos.forEach((a,i)=>{
+   let div=document.createElement('div');div.className='prod';
+   let img=document.createElement('img');img.src=a.download_url;img.loading='lazy';
+   img.onclick=()=>{document.getElementById('imgGrande').src=a.download_url;document.getElementById('visor').style.display='flex';}
 
-  let fotos = d.filter(f => {
-    let n=f.name.toLowerCase();
-    return (n.endsWith('.jpg')||n.endsWith('.png')||n.endsWith('.jpeg')) &&!n.includes('logo') &&!f.name.includes('8325');
-  });
+   let nombreFinal = "Producto Makeup Lind@s";
+   let lowerName = a.name.toLowerCase();
+   for(let key in NOMBRES_REALES){
+     if(lowerName.includes(key)){ nombreFinal = NOMBRES_REALES[key]; break; }
+   }
+   // Si no lo encuentra por nombre, asigna por el texto que se ve en la imagen
+   if(nombreFinal === "Producto Makeup Lind@s"){
+     const porOrden = ["Shampoo Banano Sin Sal","Poción Tongolé","Esponja Youngqi","Mystic Magic","Kit Candy Bum","Candy Bum Spray","Body Splash Girl Boss","Exfoliante Piña Colada","Llavero Stitch","Serum Despigmentante","Lip Gloss Chica Púrpura","Exfoliante Watermelon","Bases Ani-K","Kit Candy Bum x3","Corrector Ani-K","Serum Hialurónico","Correctores Ani-K","Ganchos Corazón","Candy Bum Dulce","Girl Boss Splash","Piña Colada","Stitch Azul","Serum Lavanda","Chica Púrpura Gloss","Kit Sandía","Base L.A. Girl","Kit Dulce","Corrector Medio","Gel Candy Bum","Exfoliante Bubble Gum","Caramel Crush","Holiday Iluminador","Blinked Paleta","Agua Micelar","Lip Glow Candy"];
+     if(porOrden[i]) nombreFinal = porOrden[i];
+   }
 
-  let nombres = ["Poción Kids Anyeluz","Kit Banano Anyeluz Nutritivo","Primer HudaBon Make Cream","Shampoo Cebolla Anyeluz"];
-
-  let c=document.getElementById('productos');
-  c.innerHTML='';
-  fotos.forEach((a,i)=>{
-    let div=document.createElement('div');div.className='prod';
-    let img=document.createElement('img');img.src=a.download_url;
-    img.onclick=()=>{document.getElementById('imgGrande').src=a.download_url;document.getElementById('visor').style.display='flex';}
-    let nom=document.createElement('div');nom.className='nombre';nom.innerText=nombres[i] || "Producto Makeup Lind@s";
-    let b=document.createElement('a');b.className='btn';b.href=`https://wa.me/573161465193?text=Hola Jennifer! Me interesa: ${nom.innerText}`;b.target='_blank';b.innerText='PEDIR POR WHATSAPP';
-    div.appendChild(img);div.appendChild(nom);div.appendChild(b);c.appendChild(div);
-  });
- }catch(e){console.log(e); document.getElementById('productos').innerHTML='<p style="color:white">Error cargando productos, recarga la página</p>';}
+   let nom=document.createElement('div');nom.className='nombre';nom.innerText=nombreFinal;
+   let b=document.createElement('a');b.className='btn';b.href=`https://wa.me/573161465193?text=Hola Jennifer! Me interesa: ${nombreFinal}`;b.target='_blank';b.innerText='PEDIR POR WHATSAPP';
+   div.appendChild(img);div.appendChild(nom);div.appendChild(b);c.appendChild(div);
+ });
 }
 cargar();
 </script>
