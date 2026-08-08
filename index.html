@@ -11,25 +11,38 @@ h1{color:#FFD700}
 .prod{background:#111;border-radius:15px;padding:8px;border:1px solid #333}
 .prod img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
 .btn{display:block;background:#FFD700;color:#000;padding:10px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:8px}
-#visor{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:999}
-#visor img{max-width:95%;max-height:95%;border-radius:15px}
+#visor{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:none;justify-content:center;align-items:center;z-index:999;flex-direction:column}
+#visor img{max-width:95%;max-height:85%;border-radius:15px}
+#visor span{color:#FFD700;margin-top:15px;font-size:14px}
 </style>
 </head>
 <body>
 <h1>💄 MAKEUP LINDAS 💄</h1>
 <div id="productos"></div>
-<div id="visor" onclick="this.style.display='none'"><img id="imgGrande"></div>
+<div id="visor" onclick="cerrar()"><img id="imgGrande"><span>Toca para cerrar o dale atrás ↩️</span></div>
 <script>
+function abrir(src){
+document.getElementById('imgGrande').src=src;
+document.getElementById('visor').style.display='flex';
+history.pushState({visor:true},'');
+}
+function cerrar(){
+document.getElementById('visor').style.display='none';
+if(history.state && history.state.visor){history.back()}
+}
+window.onpopstate=function(){
+document.getElementById('visor').style.display='none';
+}
 async function cargar(){
 let r=await fetch('https://api.github.com/repos/cristian221990emily-bit/makeup-lindas/contents/');
 let d=await r.json();
 let c=document.getElementById('productos');
 d.forEach(a=>{
-if(a.name.endsWith('.jpg')||a.name.endsWith('.png')||a.name.endsWith('.jpeg')){
+if(a.name.toLowerCase().endsWith('.jpg')||a.name.toLowerCase().endsWith('.png')||a.name.toLowerCase().endsWith('.jpeg')){
 let div=document.createElement('div');div.className='prod';
 let img=document.createElement('img');img.src=a.download_url;
-img.onclick=()=>{document.getElementById('imgGrande').src=a.download_url;document.getElementById('visor').style.display='flex'}
-let b=document.createElement('a');b.className='btn';b.href=`https://wa.me/573161465193?text=Hola! Me interesa este producto: ${a.name}`;b.target='_blank';b.innerText='PEDIR POR WHATSAPP';
+img.onclick=()=>abrir(a.download_url)
+let b=document.createElement('a');b.className='btn';b.href=`https://wa.me/573161465193?text=Hola Jennifer! Me interesa este producto: ${a.name}`;b.target='_blank';b.innerText='PEDIR POR WHATSAPP';
 div.appendChild(img);div.appendChild(b);c.appendChild(div);
 }
 });
