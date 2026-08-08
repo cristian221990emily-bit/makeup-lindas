@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Makeup Lindas</title>
+<title>MAKEUP LIND@S</title>
 <style>
 body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0;padding:10px;padding-bottom:90px}
-h1{color:#FFD700}
+.logo{width:200px;margin:15px auto;display:block}
 #productos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.prod{background:#111;border-radius:15px;padding:8px;border:1px solid #333}
+.prod{background:#111;border-radius:15px;padding:8px;border:1px solid #222}
 .prod img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
-.btn{display:block;background:#FFD700;color:#000;padding:10px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:8px}
+.btn{display:block;background:#FFD700;color:#000;padding:10px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:8px;font-size:13px}
 #visor{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:none;justify-content:center;align-items:center;z-index:999}
 #visor img{max-width:95%;max-height:90%;border-radius:15px}
 .wa-flotante{position:fixed;bottom:20px;right:20px;background:#25D366;width:65px;height:65px;border-radius:50%;display:flex;justify-content:center;align-items:center;z-index:1000;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
@@ -18,14 +18,12 @@ h1{color:#FFD700}
 </style>
 </head>
 <body>
-<h1>💄 MAKEUP LINDAS 💄</h1>
+<img src="logo.png" class="logo" alt="MAKEUP LIND@S">
 <div id="productos"></div>
 <div id="visor" onclick="cerrar()"><img id="imgGrande"></div>
-
-<a href="https://wa.me/573161465193?text=Hola%20Jennifer!%20Vi%20tu%20tienda%20Makeup%20Lindas%20y%20quiero%20mas%20info" class="wa-flotante" target="_blank">
+<a href="https://wa.me/573161465193?text=Hola%20Jennifer!%20Vi%20tu%20tienda%20MAKEUP%20LIND@S%20y%20quiero%20mas%20info" class="wa-flotante" target="_blank">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
 </a>
-
 <script>
 function abrir(src){document.getElementById('imgGrande').src=src;document.getElementById('visor').style.display='flex';history.pushState({visor:true},'');}
 function cerrar(){document.getElementById('visor').style.display='none';if(history.state && history.state.visor){history.back()}}
@@ -36,6 +34,7 @@ let d=await r.json();
 let c=document.getElementById('productos');
 d.forEach(a=>{
 if(a.name.toLowerCase().endsWith('.jpg')||a.name.toLowerCase().endsWith('.png')||a.name.toLowerCase().endsWith('.jpeg')){
+let n=a.name.toLowerCase(); if(n=='logo.png'||n.includes('logo')) return;
 let div=document.createElement('div');div.className='prod';
 let img=document.createElement('img');img.src=a.download_url;
 img.onclick=()=>abrir(a.download_url)
