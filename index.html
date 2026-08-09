@@ -6,29 +6,29 @@
 <title>MAKEUP LIND@S</title>
 <style>
 body{background:#000;color:#fff;font-family:Arial;text-align:center;margin:0}
-.marquesina{background:#ff6da9;color:#fff;padding:8px 0;overflow:hidden;white-space:nowrap;font-weight:bold;font-size:13px}
+.marquesina{background:linear-gradient(90deg,#FFD700,#f0c000,#FFD700);color:#000;padding:9px 0;overflow:hidden;white-space:nowrap;font-weight:900;font-size:13px;letter-spacing:1px;border-bottom:2px solid #b89600}
 .marquesina span{display:inline-block;animation:mover 18s linear infinite}
 @keyframes mover{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 .logo{width:250px;max-width:90%;margin:15px auto;display:block;border-radius:12px}
-#productos{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 10px 85px 10px}
+#productos{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 10px 90px 10px}
 .prod{background:#111;border-radius:18px;padding:6px;border:1px solid #222}
 .prod img{width:100%;height:190px;object-fit:cover;border-radius:14px 14px 0 0;display:block;background:#222}
 .boton{display:block;background:#FFD700;color:#000;padding:11px;border-radius:25px;text-decoration:none;font-weight:bold;margin-top:7px;font-size:11px}
 .prod:last-child:nth-child(odd){grid-column:1 / -1;max-width:calc(50% - 6px);margin:0 auto}
-.flot{position:fixed;bottom:15px;left:15px;display:flex;gap:14px;z-index:9998}
-.flot a{width:62px;height:62px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.flot a img{width:100%;height:100%;object-fit:cover}
+.flot{position:fixed;bottom:18px;left:15px;display:flex;gap:12px;z-index:9998}
+.flot a{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.6)}
+.flot a img{width:32px;height:32px;object-fit:contain;filter:brightness(0) invert(1)}
 #visor{position:fixed;inset:0;background:rgba(0,0,0,0.96);display:none;z-index:9999;align-items:center;justify-content:center}
 #visor img{max-width:96%;max-height:90%;border-radius:14px}
 </style>
 </head>
 <body>
-<div class="marquesina"><span>💄 TU TIENDA DE MAQUILLAJE FAVORITA • MAKEUP LIND@S • ENVÍOS A TODO COLOMBIA • 💖 TU TIENDA DE MAQUILLAJE FAVORITA •</span></div>
+<div class="marquesina"><span>✨ TU TIENDA DE MAQUILLAJE FAVORITA • MAKEUP LIND@S • ENVÍOS A TODO COLOMBIA • PRODUCTOS 100% ORIGINALES • ✨ TU TIENDA DE MAQUILLAJE FAVORITA •</span></div>
 <img id="miLogo" class="logo">
 <div id="productos">Cargando...</div>
 <div class="flot">
-<a href="https://www.instagram.com/makeuplinda2026" target="_blank"><img src="instagram.png"></a>
-<a href="https://wa.me/573161465193" target="_blank"><img src="whatsapp.png"></a>
+<a href="https://www.instagram.com/makeuplinda2026" target="_blank" style="background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"></a>
+<a href="https://wa.me/573161465193" target="_blank" style="background:#25D366"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></a>
 </div>
 <div id="visor" onclick="this.style.display='none'"><img id="fotoGrande"></div>
 <script>
